@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "helditemsaver",
+	"version": "${version}",
+	"name": "HeldItemSaver",
+	"description": "Saves Held items at beginning of the match, and restores them at the end of the match.",
+	"authors": [
+		"Novoro"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/helditemsaver/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"HeldItemSaver.HeldItemSaver"
+		]
+	},
+	"mixins": [
+      "helditemsaver.mixins.json"
+	],
+	"depends": {
+		"cobblemon": ">=1.2.0",
+		"java": ">=17",
+		"minecraft": "~1.20.1",
+		"fabric-api": "*",
+		"fabricloader": ">=0.14.21"
+	},
+	"suggests": {}
+}
