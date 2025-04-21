@@ -39,7 +39,6 @@ public class HeldItemSaver implements ModInitializer {
 
         // Initialize BattleListener and CatchEventListener
         new BattleListener();
-        new CatchEventListener();
     }
 
     /**
@@ -62,9 +61,9 @@ public class HeldItemSaver implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             dispatcher.register(CommandManager.literal("helditemsaver")
                     .then(CommandManager.literal("reload")
-                            .requires(source -> source.hasPermissionLevel(2)) // Permission check
+                            .requires(source -> source.hasPermissionLevel(2))
                             .executes(context -> {
-                                ModLogger.reloadConfig(); // Reload the logger config
+                                ModLogger.reloadConfig();
                                 context.getSource().sendMessage(Text.literal("HeldItemSaver configuration reloaded."));
                                 return 1;
                             })

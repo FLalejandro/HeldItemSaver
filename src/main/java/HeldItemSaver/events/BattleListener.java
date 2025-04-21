@@ -15,6 +15,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import kotlin.Unit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,7 @@ public class BattleListener {
         for (ServerPlayerEntity player : players) {
             UUID playerUUID = player.getUuid();
             // Retrieves the player's party store
-            PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(playerUUID);
+            PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
 
             ModLogger.debug("Storing held items for player {} (UUID: {})", player.getName().getString(), playerUUID);
 
@@ -151,13 +152,14 @@ public class BattleListener {
 
     private void processPlayerBattleEnd(PlayerBattleActor actor) throws NoPokemonStoreException {
         for (UUID playerUUID : actor.getPlayerUUIDs()) {
+            ServerPlayerEntity player = actor.getEntity();
             ModLogger.debug("Processing battle end for player UUID: {}", playerUUID);
-            restorePlayerHeldItems(playerUUID);
+            restorePlayerHeldItems(player, playerUUID);
         }
     }
 
-    private void restorePlayerHeldItems(UUID playerUUID) throws NoPokemonStoreException {
-        PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(playerUUID);
+    private void restorePlayerHeldItems(ServerPlayerEntity player, UUID playerUUID) throws NoPokemonStoreException {
+        PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
         if (partyStore == null) {
             ModLogger.error("Party store not found for player UUID: {}", playerUUID);
             return;

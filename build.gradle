@@ -1,33 +1,22 @@
 plugins {
-	id 'fabric-loom' version '1.3-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
 
-base {
-	archivesName = project.archives_base_name
-}
-
 repositories {
+	mavenCentral()
+	maven {
+		url 'https://oss.sonatype.org/content/repositories/snapshots'
+	}
+	maven {
+		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+	}
 
 	maven {
-		url = uri("https://cursemaven.com")
-		content {
-			includeGroup("curse.maven")
-		}
-	}
-}
-
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"modid" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
+		url "https://maven.impactdev.net/repository/development/"
 	}
 
 }
@@ -40,13 +29,14 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-lifecycle-events-v1:${project.fabric_version}"
+	modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+
+	// Cobblemon 1.6.1
+	modImplementation("com.cobblemon:fabric:1.6.1+1.21.1")
 
 	// JSON
 	implementation 'com.google.code.gson:gson:2.8.8'
 
-	// Cobblemon API
-	modApi("curse.maven:cobblemon-687131:${rootProject.cobblemon_file_version}")
 }
 
 processResources {
@@ -58,38 +48,10 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
