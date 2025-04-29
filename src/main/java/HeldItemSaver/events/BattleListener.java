@@ -160,6 +160,7 @@ public class BattleListener {
 
     private void restorePlayerHeldItems(ServerPlayerEntity player, UUID playerUUID) throws NoPokemonStoreException {
         PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
+        if (player == null) return;
         if (partyStore == null) {
             ModLogger.error("Party store not found for player UUID: {}", playerUUID);
             return;
