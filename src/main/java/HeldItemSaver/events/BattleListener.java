@@ -5,17 +5,18 @@ import HeldItemSaver.util.HeldItemManager;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
-import com.cobblemon.mod.common.api.events.battles.*;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
+import com.cobblemon.mod.common.api.events.battles.BattleEvent;
+import com.cobblemon.mod.common.api.events.battles.BattleFledEvent;
+import com.cobblemon.mod.common.api.events.battles.BattleStartedPostEvent;
+import com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent;
 import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.battles.actor.PlayerBattleActor;
-import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import kotlin.Unit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,9 +159,12 @@ public class BattleListener {
         }
     }
 
-    private void restorePlayerHeldItems(ServerPlayerEntity player, UUID playerUUID) throws NoPokemonStoreException {
+    private void restorePlayerHeldItems(ServerPlayerEntity player, UUID playerUUID) {
+        if (player == null) {
+            ModLogger.error("Player (UUID: {}) unavailable to restore items.", playerUUID);
+            return;
+        }
         PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
-        if (player == null) return;
         if (partyStore == null) {
             ModLogger.error("Party store not found for player UUID: {}", playerUUID);
             return;
