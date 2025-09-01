@@ -1,6 +1,6 @@
-package HeldItemSaver.util;
+package me.novoro.HeldItemSaver.util;
 
-import HeldItemSaver.configs.ModLogger;
+import me.novoro.HeldItemSaver.configs.ModLogger;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.item.ItemStack;
 

@@ -8,15 +8,14 @@
 		"Novoro"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/AleGuzAva/HeldItemSaver"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/helditemsaver/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"HeldItemSaver.HeldItemSaver"
+			"me.novoro.HeldItemSaver.HeldItemSaver"
 		]
 	},
 	"mixins": [
@@ -26,8 +25,6 @@
 		"java": ">=21",
 		"minecraft": ">=1.21.1",
 		"fabric-api": "*",
-		"fabricloader": ">=0.14.21",
-		"fabric-language-kotlin": "*"
-	},
-	"suggests": {}
+		"fabricloader": ">=0.14.21"
+	}
 }
