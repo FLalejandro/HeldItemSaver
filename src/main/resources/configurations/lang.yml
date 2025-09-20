@@ -2,8 +2,5 @@ Lang:
   # Mod Prefix
   Prefix: "<gradient:#FDC830:#F37335>&l[HᴇʟᴅIᴛᴇᴍSᴀᴠᴇʀ]</gradient>&f "
 
-  # Blacklist
-  Blacklisted-Item: "<dark_red>{item} <red>can not be held by a Pokemon!"
-
 # Do not touch this. This is solely for future config updates.
 Config-Version: 2.0

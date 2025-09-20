@@ -52,7 +52,6 @@ public class HeldItemSaver implements ModInitializer {
 
         // Initialize BattleListener and CatchEventListener
         new BattleListener();
-        HeldItemSwapEventHandler.register();
     }
 
     // Reloads Configs
