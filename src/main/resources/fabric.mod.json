@@ -11,11 +11,10 @@
 		"homepage": "https://github.com/AleGuzAva/HeldItemSaver"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/helditemsaver/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"me.novoro.HeldItemSaver.HeldItemSaver"
+			"me.novoro.helditemsaver.HeldItemSaver"
 		]
 	},
 	"mixins": [
