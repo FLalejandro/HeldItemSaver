@@ -1,6 +1,6 @@
 # In this config, you can tweak how certain interactions function.
 # Any changes to this config will require either a server restart, or `/helditemsaver reload`.
-Logging: true
+logging: false
 
 # Do not touch this. This is solely for future config updates.
 Config-Version: 2.0
