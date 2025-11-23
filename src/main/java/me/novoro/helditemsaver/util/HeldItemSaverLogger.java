@@ -25,7 +25,7 @@ public class HeldItemSaverLogger {
      * @param s The string to log.
      */
     public static void info(String s, PokemonBattle battle) {
-        HeldItemSaverLogger.LOGGER.info("{}{}", "[HeldItemSaver]: ", s, battle);
+        HeldItemSaverLogger.LOGGER.info("{}{}{}", "[HeldItemSaver]: ", s, battle);
     }
 
     /**
@@ -49,7 +49,7 @@ public class HeldItemSaverLogger {
      * @param s The string to log.
      */
     public static void error(String s, UUID uuid) {
-        HeldItemSaverLogger.LOGGER.error("{}{}", "[HeldItemSaver]: ", s, uuid);
+        HeldItemSaverLogger.LOGGER.error("{}{}{}", "[HeldItemSaver]: ", s, uuid);
     }
 
     /**
@@ -60,5 +60,9 @@ public class HeldItemSaverLogger {
         HeldItemSaverLogger.error(throwable.toString());
         StackTraceElement[] trace = throwable.getStackTrace();
         for (StackTraceElement traceElement : trace) HeldItemSaverLogger.error("\tat " + traceElement);
+    }
+
+    public static void info(String s, String string, UUID playerUUID) {
+        HeldItemSaverLogger.LOGGER.error("{}{}{}{}", "[HeldItemSaver]: ", s, string, playerUUID);
     }
 }

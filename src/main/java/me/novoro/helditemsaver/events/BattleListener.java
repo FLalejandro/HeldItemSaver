@@ -1,6 +1,7 @@
 package me.novoro.helditemsaver.events;
 
 import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import me.novoro.helditemsaver.config.SettingsManager;
 import me.novoro.helditemsaver.util.HeldItemSaverLogger;
 import me.novoro.helditemsaver.util.HeldItemManager;
@@ -36,9 +37,9 @@ public class BattleListener {
      * Registers this listener to various battle and held item events in the game.
      */
     public void BattleEventListener() {
-        CobblemonEvents.BATTLE_STARTED_POST.subscribe(Priority.NORMAL, this::handleBattleStartedEvent);
-        CobblemonEvents.BATTLE_VICTORY.subscribe(Priority.NORMAL, this::handleBattleEndedEvent);
-        CobblemonEvents.BATTLE_FLED.subscribe(Priority.NORMAL, this::handleBattleEndedEvent);
+        CobblemonEvents.BATTLE_STARTED_POST.subscribe(Priority.NORMAL, (Function1<? super BattleStartedEvent.Post, Unit>) this::handleBattleStartedEvent);
+        CobblemonEvents.BATTLE_VICTORY.subscribe(Priority.NORMAL, (Function1<? super BattleVictoryEvent, Unit>) this::handleBattleEndedEvent);
+        CobblemonEvents.BATTLE_FLED.subscribe(Priority.NORMAL, (Function1<? super BattleFledEvent, Unit>) this::handleBattleEndedEvent);
     }
 
     /**
@@ -121,7 +122,7 @@ public class BattleListener {
             // Retrieves the player's party store
             PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
 
-            //HeldItemSaverLogger.info("Storing held items for player {} (UUID: {})", player.getName().getString(), playerUUID);
+            HeldItemSaverLogger.info("Storing held items for player {} (UUID: {})", player.getName().getString(), playerUUID);
 
             // Allocates space for held items including empty slots
             ItemStack[] heldItems = new ItemStack[partyStore.size()];
@@ -131,12 +132,12 @@ public class BattleListener {
                 heldItems[i] = (pokemon != null) ? pokemon.heldItem() : ItemStack.EMPTY;
 
                 // Logs the start item for each slot
-                //HeldItemSaverLogger.info("Slot {} - Start Item: {}", i, heldItems[i] != ItemStack.EMPTY ? heldItems[i].getItem().toString() : "null");
+                HeldItemSaverLogger.info("Slot {} - Start Item: {}", heldItems[i] != ItemStack.EMPTY ? heldItems[i].getItem().toString() : "null", playerUUID);
             }
 
             // Stores the held items for the player before the battle starts
             heldItemManager.storeHeldItemsBeforeBattle(playerUUID, heldItems);
-            //HeldItemSaverLogger.info("Held items stored for player {} (UUID: {})", player.getName().getString(), playerUUID);
+            HeldItemSaverLogger.info("Held items stored for player {} (UUID: {})", player.getName().getString(), playerUUID);
         }
     }
 
@@ -173,7 +174,7 @@ public class BattleListener {
         for (int i = 0; i < partyStore.size(); i++) {
             Pokemon pokemon = partyStore.get(i);
             String endItemDesc = (pokemon != null && pokemon.heldItem() != null) ? pokemon.heldItem().getItem().toString() : "null";
-            //HeldItemSaverLogger.info("Slot {} - End Item: {}", i, endItemDesc);
+            HeldItemSaverLogger.info("Slot {} - End Item: {}", endItemDesc, playerUUID);
             partyPokemon.add(pokemon);
         }
 
@@ -185,7 +186,7 @@ public class BattleListener {
         for (int i = 0; i < partyStore.size(); i++) {
             Pokemon pokemon = partyStore.get(i);
             String finalItemDesc = (pokemon != null && pokemon.heldItem() != null) ? pokemon.heldItem().getItem().toString() : "null";
-            //HeldItemSaverLogger.info("Final state - Slot {} - Item: {}", i, finalItemDesc);
+            HeldItemSaverLogger.info("Final state - Slot {} - Item: {}", finalItemDesc, playerUUID);
         }
 
         if (SettingsManager.areLogsEnabled()) {
