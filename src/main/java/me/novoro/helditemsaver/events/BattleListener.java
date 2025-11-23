@@ -33,6 +33,10 @@ public class BattleListener {
     // Set to keep track of processed battles to avoid re-processing
     private final Set<UUID> processedBattles = ConcurrentHashMap.newKeySet();
 
+    public BattleListener() {
+        BattleEventListener();
+    }
+
     /**
      * Registers this listener to various battle and held item events in the game.
      */
@@ -52,10 +56,8 @@ public class BattleListener {
         try {
             onBattleStartedPost(event);
         } catch (NoPokemonStoreException e) {
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Storage exception during battle start processing");
-                HeldItemSaverLogger.printStackTrace(e);
-            }
+            HeldItemSaverLogger.error("Storage exception during battle start processing");
+            HeldItemSaverLogger.printStackTrace(e);
         }
         return Unit.INSTANCE;
     }
@@ -67,20 +69,15 @@ public class BattleListener {
      * @param event The BattleEvent object containing information about the ended battle.
      */
     private Unit handleBattleEndedEvent(BattleEvent event) {
-        String eventType = event instanceof BattleVictoryEvent ? "Victory" :
-                event instanceof BattleFledEvent ? "Flee" :
-                        "Faint";
-        if (SettingsManager.areLogsEnabled()) {
-            HeldItemSaverLogger.info("Battle ended with " + eventType);
-        }
+        String eventType = event instanceof BattleVictoryEvent ? "Victory" : event instanceof BattleFledEvent ? "Flee" : "Faint";
+        HeldItemSaverLogger.info("Battle ended with " + eventType);
+
 
         try {
             processBattleEnd(event.getBattle());
         } catch (NoPokemonStoreException e) {
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Storage exception during battle " + eventType + " processing");
-                HeldItemSaverLogger.printStackTrace(e);
-            }
+            HeldItemSaverLogger.error("Storage exception during battle " + eventType + " processing");
+            HeldItemSaverLogger.printStackTrace(e);
         }
         return Unit.INSTANCE;
     }
@@ -94,9 +91,7 @@ public class BattleListener {
      */
     private void processBattleEnd(PokemonBattle battle) throws NoPokemonStoreException {
         if (!processedBattles.add(battle.getBattleId())) {
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Battle already processed, skipping: {}", battle.getBattleId());
-            }
+            HeldItemSaverLogger.error("Battle already processed, skipping: {}", battle.getBattleId());
             return;
         }
 
@@ -151,9 +146,7 @@ public class BattleListener {
     private void processPlayerBattleEnd(PlayerBattleActor actor) throws NoPokemonStoreException {
         for (UUID playerUUID : actor.getPlayerUUIDs()) {
             ServerPlayerEntity player = actor.getEntity();
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Processing battle end for player UUID: {}", playerUUID);
-            }
+            HeldItemSaverLogger.error("Processing battle end for player UUID: {}", playerUUID);
             restorePlayerHeldItems(player, playerUUID);
         }
     }
@@ -189,9 +182,7 @@ public class BattleListener {
             HeldItemSaverLogger.info("Final state - Slot {} - Item: {}", finalItemDesc, playerUUID);
         }
 
-        if (SettingsManager.areLogsEnabled()) {
-            HeldItemSaverLogger.error("Restored held items for player UUID: {}", playerUUID);
-        }
+        HeldItemSaverLogger.error("Restored held items for player UUID: {}", playerUUID);
     }
 
 

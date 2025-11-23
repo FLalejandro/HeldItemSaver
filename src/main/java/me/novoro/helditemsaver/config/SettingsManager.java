@@ -7,7 +7,6 @@ import java.util.List;
 
 public class SettingsManager extends VersionedConfig {
     private static boolean areLogsEnabled;
-    private static List<String> heldItemsBlacklist;
 
 
     @Override
@@ -17,7 +16,7 @@ public class SettingsManager extends VersionedConfig {
     }
 
     public static boolean areLogsEnabled() {
-        return SettingsManager.areLogsEnabled();
+        return areLogsEnabled;
     }
 
     @Override

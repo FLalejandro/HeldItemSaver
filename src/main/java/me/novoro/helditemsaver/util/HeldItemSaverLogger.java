@@ -1,6 +1,7 @@
 package me.novoro.helditemsaver.util;
 
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
+import me.novoro.helditemsaver.config.SettingsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,19 +13,24 @@ import java.util.UUID;
 public class HeldItemSaverLogger {
     private static final Logger LOGGER = LoggerFactory.getLogger("HeldItemSaver");
 
-    /**
-     * Sends an info log to console.
-     * @param s The string to log.
-     */
-    public static void info(String s) {
-        HeldItemSaverLogger.LOGGER.info("{}{}", "[HeldItemSaver]: ", s);
+    private static boolean enabled() {
+        return SettingsManager.areLogsEnabled();
     }
 
     /**
      * Sends an info log to console.
      * @param s The string to log.
      */
+    public static void info(String s) {
+        if (!enabled()) return;
+        LOGGER.info("[HeldItemSaver] {}", s);
+    }
+    /**
+     * Sends an info log to console.
+     * @param s The string to log.
+     */
     public static void info(String s, PokemonBattle battle) {
+        if (!enabled()) return;
         HeldItemSaverLogger.LOGGER.info("{}{}{}", "[HeldItemSaver]: ", s, battle);
     }
 
@@ -33,23 +39,24 @@ public class HeldItemSaverLogger {
      * @param s The string to log.
      */
     public static void warn(String s) {
-        HeldItemSaverLogger.LOGGER.warn("{}{}", "[HeldItemSaver]: ", s);
+        if (!enabled()) return;
+        LOGGER.warn("[HeldItemSaver] {}", s);
     }
-
     /**
      * Sends an error log to console.
      * @param s The string to log.
      */
     public static void error(String s) {
-        HeldItemSaverLogger.LOGGER.error("{}{}", "[HeldItemSaver]: ", s);
+        if (!enabled()) return;
+        LOGGER.error("[HeldItemSaver] {}", s);
     }
-
     /**
      * Sends an error log to console.
      * @param s The string to log.
      */
     public static void error(String s, UUID uuid) {
-        HeldItemSaverLogger.LOGGER.error("{}{}{}", "[HeldItemSaver]: ", s, uuid);
+        if (!enabled()) return;
+        LOGGER.error("[HeldItemSaver] {} {}", s, uuid);
     }
 
     /**
@@ -57,12 +64,15 @@ public class HeldItemSaverLogger {
      * @param throwable The exception to print.
      */
     public static void printStackTrace(Throwable throwable) {
-        HeldItemSaverLogger.error(throwable.toString());
-        StackTraceElement[] trace = throwable.getStackTrace();
-        for (StackTraceElement traceElement : trace) HeldItemSaverLogger.error("\tat " + traceElement);
+        if (!enabled()) return;
+        error(throwable.toString());
+        for (StackTraceElement el : throwable.getStackTrace()) {
+            error("\tat " + el);
+        }
     }
 
     public static void info(String s, String string, UUID playerUUID) {
+        if (!enabled()) return;
         HeldItemSaverLogger.LOGGER.error("{}{}{}{}", "[HeldItemSaver]: ", s, string, playerUUID);
     }
 }

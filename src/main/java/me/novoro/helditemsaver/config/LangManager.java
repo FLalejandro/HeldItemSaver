@@ -67,13 +67,9 @@ public final class LangManager extends VersionedConfig {
         audience.sendMessage(ColorUtil.parseColour(lang));
     }
 
-    public @NotNull String getOrDefault(String langKey, String def) {
-        return this.LANG.getOrDefault(langKey, def);
-    }
-
     @Override
     protected double getCurrentConfigVersion() {
-        return 1.0;
+        return 2.0;
     }
 
     @Override

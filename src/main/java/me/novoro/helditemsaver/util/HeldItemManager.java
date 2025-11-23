@@ -24,15 +24,11 @@ public class HeldItemManager {
      */
     public void storeHeldItemsBeforeBattle(UUID uuid, ItemStack[] heldItems) {
         if (heldItems == null) {
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Failed to store held items: 'heldItems' is null for UUID {}", uuid);
-            }
+            HeldItemSaverLogger.error("Failed to store held items: 'heldItems' is null for UUID {}", uuid);
             return;
         }
         heldItemsBeforeBattle.put(uuid, heldItems);
-        if (SettingsManager.areLogsEnabled()) {
-            HeldItemSaverLogger.error("Stored held items for UUID {}", uuid);
-        }
+        HeldItemSaverLogger.error("Stored held items for UUID {}", uuid);
     }
 
     /**
@@ -45,9 +41,7 @@ public class HeldItemManager {
     public void restoreHeldItems(UUID uuid, List<Pokemon> pokemons) {
         ItemStack[] heldItemsBefore = heldItemsBeforeBattle.get(uuid);
         if (heldItemsBefore == null) {
-            if (SettingsManager.areLogsEnabled()) {
-                HeldItemSaverLogger.error("Restoration failed: Missing data for UUID {}", uuid);
-            }
+            HeldItemSaverLogger.error("Restoration failed: Missing data for UUID {}", uuid);
             return;
         }
 
@@ -58,9 +52,7 @@ public class HeldItemManager {
             ItemStack currentHeldItem = pokemon.heldItem();
             if (!ItemStack.areItemsEqual(heldItemsBefore[i], currentHeldItem)) {
                 pokemon.swapHeldItem(heldItemsBefore[i], false, false);
-                if (SettingsManager.areLogsEnabled()) {
-                    HeldItemSaverLogger.error("Restored held item for UUID {}", uuid);
-                }
+                HeldItemSaverLogger.error("Restored held item for UUID {}", uuid);
             }
         }
 
@@ -73,13 +65,9 @@ public class HeldItemManager {
      * @param uuid The UUID of the player or Pokémon.
      */
     public void clearHeldItems(UUID uuid) {
-        if (SettingsManager.areLogsEnabled()) {
-            HeldItemSaverLogger.error("Clearing stored held items for UUID {}", uuid);
-            if (heldItemsBeforeBattle.remove(uuid) == null) {
-                if (SettingsManager.areLogsEnabled()) {
-                    HeldItemSaverLogger.error("Attempted to clear non-existent held items for UUID {}", uuid);
-                }
-            }
+        HeldItemSaverLogger.error("Clearing stored held items for UUID {}", uuid);
+        if (heldItemsBeforeBattle.remove(uuid) == null) {
+            HeldItemSaverLogger.error("Attempted to clear non-existent held items for UUID {}", uuid);
         }
     }
 }
